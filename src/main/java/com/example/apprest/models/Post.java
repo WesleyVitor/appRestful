@@ -16,15 +16,11 @@ public class Post implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @Column(nullable = false,unique = true,length = 11)
-    @CPF(message = "Cpf inválido")
-    private String cpf;
-
     @Column(nullable = false)
-    private String nome;
+    private String titulo;
 
-    @Column(nullable = false, columnDefinition = "TEXT")
-    private String dataNascimento;
+    @Column(columnDefinition = "TEXT")
+    private String corpo;
 
 
 
