@@ -1,7 +1,7 @@
 package com.example.apprest.Controller;
 
 import com.example.apprest.models.Post;
-import com.example.apprest.repository.PostRepository;
+import com.example.apprest.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,11 +17,12 @@ import java.util.Optional;
 public class PostController {
 
     @Autowired
-    PostRepository postRepository;
+    PostService postService;
+
 
     @GetMapping("/listaPosts")
     public ResponseEntity<List<Post>> getAllPosts(){
-        List<Post> posts =  postRepository.findAll();
+        List<Post> posts =  postService.listaTodosOsPosts();
         if(posts.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }else{
@@ -31,12 +32,12 @@ public class PostController {
 
     @PostMapping
     public ResponseEntity<Post> salvarPost(@RequestBody @Valid Post post){
-        return new ResponseEntity<Post>(postRepository.save(post), HttpStatus.CREATED);
+        return new ResponseEntity<Post>(postService.salvarPost(post), HttpStatus.CREATED);
     }
 
     @GetMapping("/listaPost/{id}")
     public ResponseEntity<Post> getOnePost(@PathVariable(value = "id") long id){
-        Optional<Post> post = postRepository.findById(id);
+        Optional<Post> post = postService.pegarPostEspecifico(id);
         if(!post.isPresent()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }else{
@@ -46,22 +47,22 @@ public class PostController {
 
     @PutMapping("/editarPost/{id}")
     public ResponseEntity<Post> editarPost(@RequestBody @Valid Post post, @PathVariable(value = "id") long id){
-        Optional<Post> postEncontrado = postRepository.findById(id);
+        Optional<Post> postEncontrado = postService.pegarPostEspecifico(id);
         if(!postEncontrado.isPresent()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }else{
             post.setId(postEncontrado.get().getId());
-            return new ResponseEntity<Post>(postRepository.save(post), HttpStatus.OK);
+            return new ResponseEntity<Post>(postService.salvarPost(post), HttpStatus.OK);
         }
     }
 
     @DeleteMapping("/deletar/{id}")
     public ResponseEntity<?> deletarPost(@PathVariable(value = "id") long id){
-        Optional<Post> postEncontrado = postRepository.findById(id);
+        Optional<Post> postEncontrado = postService.pegarPostEspecifico(id);
         if(!postEncontrado.isPresent()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }else{
-            postRepository.delete(postEncontrado.get());
+            postService.deletarPost(postEncontrado.get());
             return new ResponseEntity<>(HttpStatus.OK);
         }
 
