@@ -22,7 +22,7 @@ public class PostController {
 
     @GetMapping("/listaPosts")
     public ResponseEntity<List<Post>> getAllPosts(){
-        List<Post> posts =  postService.listaTodosOsPosts();
+        List<Post> posts =  postService.getAllPosts();
         if(posts.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }else{
@@ -32,12 +32,12 @@ public class PostController {
 
     @PostMapping
     public ResponseEntity<Post> salvarPost(@RequestBody @Valid Post post){
-        return new ResponseEntity<Post>(postService.salvarPost(post), HttpStatus.CREATED);
+        return new ResponseEntity<Post>(postService.savePost(post), HttpStatus.CREATED);
     }
 
     @GetMapping("/listaPost/{id}")
     public ResponseEntity<Post> getOnePost(@PathVariable(value = "id") long id){
-        Optional<Post> post = postService.pegarPostEspecifico(id);
+        Optional<Post> post = postService.getOnePost(id);
         if(!post.isPresent()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }else{
@@ -47,22 +47,22 @@ public class PostController {
 
     @PutMapping("/editarPost/{id}")
     public ResponseEntity<Post> editarPost(@RequestBody @Valid Post post, @PathVariable(value = "id") long id){
-        Optional<Post> postEncontrado = postService.pegarPostEspecifico(id);
+        Optional<Post> postEncontrado = postService.getOnePost(id);
         if(!postEncontrado.isPresent()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }else{
             post.setId(postEncontrado.get().getId());
-            return new ResponseEntity<Post>(postService.salvarPost(post), HttpStatus.OK);
+            return new ResponseEntity<Post>(postService.savePost(post), HttpStatus.OK);
         }
     }
 
     @DeleteMapping("/deletar/{id}")
     public ResponseEntity<?> deletarPost(@PathVariable(value = "id") long id){
-        Optional<Post> postEncontrado = postService.pegarPostEspecifico(id);
+        Optional<Post> postEncontrado = postService.getOnePost(id);
         if(!postEncontrado.isPresent()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }else{
-            postService.deletarPost(postEncontrado.get());
+            postService.deletePost(postEncontrado.get());
             return new ResponseEntity<>(HttpStatus.OK);
         }
 

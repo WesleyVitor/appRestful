@@ -14,22 +14,22 @@ public class PostServiceImp implements PostService{
     PostRepository postRepository;
 
     @Override
-    public List<Post> listaTodosOsPosts() {
+    public List<Post> getAllPosts() {
         return postRepository.findAll();
     }
 
     @Override
-    public Post salvarPost(Post post) {
+    public Post savePost(Post post) {
         return postRepository.save(post);
     }
 
     @Override
-    public Optional<Post> pegarPostEspecifico(long id) {
+    public Optional<Post> getOnePost(long id) {
         return postRepository.findById(id);
     }
 
     @Override
-    public void deletarPost(Post post) {
+    public void deletePost(Post post) {
         postRepository.delete(post);
     }
 
