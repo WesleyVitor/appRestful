@@ -29,6 +29,11 @@ public class User implements Serializable {
 
     private String dataNascimento;
 
-    @OneToMany(cascade = CascadeType.REMOVE)
-    private List<Post> posts;
+    public void atualizarUsuario(User novo_usuario){
+        setCpf(novo_usuario.getCpf());
+        setEmail(novo_usuario.getEmail());
+        setDataNascimento(novo_usuario.getDataNascimento());
+        setNome(novo_usuario.getNome());
+    }
+
 }

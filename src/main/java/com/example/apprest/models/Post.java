@@ -1,7 +1,6 @@
 package com.example.apprest.models;
 
 import lombok.Data;
-import org.hibernate.validator.constraints.br.CPF;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -22,6 +21,13 @@ public class Post implements Serializable {
     @Column(columnDefinition = "TEXT")
     private String corpo;
 
+    @ManyToOne(optional = false)
+    private User user;
+
+    public void alterarPost(Post novo_post){
+        setTitulo(novo_post.getTitulo());
+        setCorpo(novo_post.getCorpo());
+    }
 
 
 

@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserService {
-    List<User> getAllUsers();
-    Optional<User> getOneUser(long id);
-    User saveUser(User user);
-    void deleteUser(User user);
+    List<User> index();
+    Optional<User> show(long id);
+    User save(User user);
+    void destroy(User user);
 }
